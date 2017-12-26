@@ -17,11 +17,19 @@ exports.cssLoaders = function (options) {
   const cssLoader = {
     loader: 'css-loader',
     options: {
+      sourceMap: options.sourceMap,
+      importLoaders: 1
+    }
+  }
+
+  const styleLoader = {
+    loader: 'style-loader',
+    options: {
       sourceMap: options.sourceMap
     }
   }
 
-  var postcssLoader = {
+  const postcssLoader = {
     loader: 'postcss-loader',
     options: {
       sourceMap: options.sourceMap
@@ -44,10 +52,11 @@ exports.cssLoaders = function (options) {
     // (which is the case during production build)
     if (options.extract) {
       return ExtractTextPlugin.extract({
-        use: loaders
+        use: loaders,
+        fallback: 'style-loader'
       })
     } else {
-      return loaders
+      return [styleLoader].concat(loaders)
     }
   }
 
